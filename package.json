@@ -1,6 +1,6 @@
 {
     "name": "OSC-Websocket",
-    "version": "1.0",
+    "version": "0.0.1",
     "dependencies": {
         "jspack": "0.0.4",
         "node-osc": "^4.1.4",
