@@ -1,0 +1,9 @@
+{
+    "name": "OSC-Websocket",
+    "version": "1.0",
+    "dependencies": {
+        "jspack": "0.0.4",
+        "node-osc": "^4.1.4",
+        "osc-min": "1.1.2"
+    }
+}
