@@ -63,18 +63,21 @@
     </form>
     <script>
         $(function() {
-        var socket = io();
-        $("#redVal").on("input",function() {
-          var val = $(this).val();
-          socket.emit("change:interval", val);
+          var socket = io();
+          $("#redVal").on("input",function() {
+            var val = $(this).val();
+            var name = $(this).attr('id');
+            socket.emit("change:interval", val, name);
           });
           $("#greenVal").on("input",function() {
-          var val = $(this).val();
-          socket.emit("change:interval", val);
+            var val = $(this).val();
+            var name = $(this).attr('id');
+            socket.emit("change:interval", val, name);
           });
           $("#blueVal").on("input",function() {
-          var val = $(this).val();
-          socket.emit("change:interval", val);
+            var val = $(this).val();
+            var name = $(this).attr('id');
+            socket.emit("change:interval", val, name);
           });
         });
     </script>
