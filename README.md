@@ -6,15 +6,12 @@ Template application fro sending OSC witha mobile phone
 
 Use the package manager [node.js](https://nodejs.org/en/) to install.
 
-```bash
-npm install
-```
-
 ## Usage
 
 Move to root folder and run the following command
 
 ```javascript
+npm install
 node index.js
 ```
 
