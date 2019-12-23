@@ -8,9 +8,11 @@ app.get('/', function(req, res){
 });
 
 io.on('connection', function (socket) {
-    console.log('a user connected');
-    const client = new Client('172.16.1.107', 3334);
-// Gets the input from the webpage and sends it through OSC
+    var user = socket.id;
+    console.log(user + " connected.");
+
+    const client = new Client('127.0.0.1', 3334);
+    // Gets the input from the webpage and sends it through OSC
     socket.on('change:interval', function(data){
         // Converts the input into an int
         const input = Number(data);
@@ -21,7 +23,7 @@ io.on('connection', function (socket) {
     });
 
     socket.on("disconnect", function () {
-        console.log('a user disconnected');
+        console.log(user + ' disconnected.');
     });
   });
 var httpport = 8080;
