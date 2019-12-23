@@ -8,11 +8,22 @@ app.get('/', function(req, res){
 });
 
 io.on('connection', function (socket) {
+    // starts new OSC client on local computer
+    const client = new Client('127.0.0.1', 3334);
     // Gets unique user ID for connected user
     var user = socket.id;
+
     console.log(user + " connected.");
 
-    const client = new Client('127.0.0.1', 3334);
+    // Gets every connected client and send a list
+    io.clients((error, clients) => {
+        if (error) throw error;
+        console.log(clients);
+        // Sends clients to OSC
+        client.send('/client', clients)
+        
+    });
+    
     // Gets the input from the webpage and sends it through OSC
     socket.on('change:interval', function(val, name){
         // Converts the input into an int
@@ -20,11 +31,17 @@ io.on('connection', function (socket) {
         // Prepares the Message to ship to OSC
         var msg = new Message('/' + user + '/' + name, value);
         client.send(msg);
-        console.log(msg);
+        // console.log(msg);
     });
 
     socket.on("disconnect", function () {
         console.log(user + ' disconnected.');
+        io.clients((error, clients) => {
+            if (error) throw error;
+            console.log(clients);
+            // Sends clients to OSC
+            client.send('/client', clients);
+        });
     });
   });
 var httpport = 8080;
