@@ -1,9 +1,11 @@
 {
-    "name": "OSC-Websocket",
+    "name": "osc-web",
     "version": "0.0.1",
+    "description": "my first socket.io app",
     "dependencies": {
-        "jspack": "0.0.4",
+        "express": "^4.17.1",
+        "latest": "^0.2.0",
         "node-osc": "^4.1.4",
-        "osc-min": "1.1.2"
+        "socket.io": "^2.3.0"
     }
 }
