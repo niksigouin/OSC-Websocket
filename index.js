@@ -1,7 +1,7 @@
 var app = require('express')();
 var http = require('http').createServer(app);
 var io = require('socket.io')(http);
-const { Client } = require('node-osc');
+const { Client, Message } = require('node-osc');
 
 app.get('/', function(req, res){
     res.sendFile(__dirname + '/index.html');
@@ -10,18 +10,21 @@ app.get('/', function(req, res){
 io.on('connection', function (socket) {
     console.log('a user connected');
     const client = new Client('172.16.1.107', 3334);
-
-    socket.on('chat message', function(msg){
-        console.log('message: ' + msg);
-        io.emit('chat message', msg);
-        client.send("/gg", 200);
+// Gets the input from the webpage and sends it through OSC
+    socket.on('change:interval', function(data){
+        // Converts the input into an int
+        const input = Number(data);
+        // Prepares the Message to ship to OSC
+        var msg = new Message('/slider', input)
+        client.send(msg);
+        console.log('message: ' + input)
     });
 
     socket.on("disconnect", function () {
         console.log('a user disconnected');
     });
   });
-
-http.listen(3000, function(){
-    console.log('listening on *:3000')
+var httpport = 8080;
+http.listen(httpport, function(){
+    console.log('listening on: ' + httpport)
 });
