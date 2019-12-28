@@ -68,7 +68,7 @@
             var idname = $(this).attr('id');
             var val = $(this).val();
             socket.emit("change:interval", val, idname);
-            console.log('Message from ' + idname, " With value: " + val); 
+            // console.log('Message from ' + idname, " With value: " + val); 
           });
           // $( "#blue" ).slider({
           //   animate: "fast"
