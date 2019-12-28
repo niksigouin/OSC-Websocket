@@ -50,35 +50,29 @@
     <form action="/" method="post" id="sliderContainer">
       <div>
           <p>Rouge: <span id="red"></span></p>
-          <input type="range" min="0" max="100" value="50" id="redVal" class='slider' style='background: red'>
+          <input type="range" min="0" max="100" value="50" id="red" class='slider' style='background: red'>
       </div>
       <div>
           <p>Vert: <span id="green"></span></p>
-          <input type="range" min="0" max="100" value="50" id="greenVal" class='slider' style='background: green'>
+          <input type="range" min="0" max="100" value="50" id="green" class='slider' style='background: green'>
       </div>
       <div>
           <p>Bleu: <span id="blue"></span></p>
-          <input type="range" min="0" max="100" value="50" id="blueVal" class='slider' style='background: blue'>
+          <input type="range" min="0" max="100" value="50" id="blue" class='slider' style='background: blue'>
       </div>
     </form>
     <script>
         $(function() {
           var socket = io();
-          $("#redVal").on("input",function() {
+          $(":input").on("input", function () {
+            var idname = $(this).attr('id');
             var val = $(this).val();
-            var name = $(this).attr('id');
-            socket.emit("change:interval", val, name);
+            socket.emit("change:interval", val, idname);
+            console.log('Message from ' + idname, " With value: " + val); 
           });
-          $("#greenVal").on("input",function() {
-            var val = $(this).val();
-            var name = $(this).attr('id');
-            socket.emit("change:interval", val, name);
-          });
-          $("#blueVal").on("input",function() {
-            var val = $(this).val();
-            var name = $(this).attr('id');
-            socket.emit("change:interval", val, name);
-          });
+          // $( "#blue" ).slider({
+          //   animate: "fast"
+          // });
         });
     </script>
   </body>

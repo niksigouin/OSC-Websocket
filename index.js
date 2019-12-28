@@ -3,6 +3,9 @@ var http = require('http').createServer(app);
 var io = require('socket.io')(http);
 const { Client, Message } = require('node-osc');
 
+//Creates empty list of connected users
+userList = [];
+
 app.get('/', function(req, res){
     res.sendFile(__dirname + '/index.html');
 });
@@ -10,19 +13,18 @@ app.get('/', function(req, res){
 io.on('connection', function (socket) {
     // starts new OSC client on local computer
     const client = new Client('127.0.0.1', 3334);
-    // Gets unique user ID for connected user
-    var user = socket.id;
 
+    // Gets IP for connected user
+    // Removes the ::ffff: if on IPv6
+    var user = (socket.handshake.address).replace("::ffff:", "");
+    
+    //Adds user IP to list and prints it
+    userList.push(user);
     console.log(user + " connected.");
-
-    // Gets every connected client and send a list
-    io.clients((error, clients) => {
-        if (error) throw error;
-        console.log(clients);
-        // Sends clients to OSC
-        client.send('/client', clients)
-        
-    });
+    console.log("IPs: ", userList)
+    
+    //Send the list of connected IPS to the OSC
+    client.send('/client', userList);
     
     // Gets the input from the webpage and sends it through OSC
     socket.on('change:interval', function(val, name){
@@ -33,15 +35,20 @@ io.on('connection', function (socket) {
         client.send(msg);
         // console.log(msg);
     });
-
+    
+    // Gets every connected client ID and send a list
     socket.on("disconnect", function () {
+        //Removes disconnected users
+        var index = userList.indexOf(user);
+        if (index > -1) {
+            userList.splice(index, 1);
+        }
+
         console.log(user + ' disconnected.');
-        io.clients((error, clients) => {
-            if (error) throw error;
-            console.log(clients);
-            // Sends clients to OSC
-            client.send('/client', clients);
-        });
+
+        //Send the list of connected IPS to the OSC
+        client.send('/client', userList);
+        console.log("IPs: ", userList);
     });
   });
 var httpport = 8080;
