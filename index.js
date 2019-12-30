@@ -20,18 +20,18 @@ io.on('connection', function (socket) {
     
     //Adds user IP to list and prints it
     userList.push(user);
-    console.log(user + " connected.");
+    console.log(user + " connected");
     console.log("IPs: ", userList)
     
     //Send the list of connected IPS to the OSC
     client.send('/client', userList);
     
     // Gets the input from the webpage and sends it through OSC
-    socket.on('change:interval', function(val, name){
+    socket.on('change:interval', function(type, val, name){
         // Converts the input into an int
-        const value = Number(val);
+        var value = Number(val);
         // Prepares the Message to ship to OSC
-        var msg = new Message('/' + user + '/' + name, value);
+        var msg = new Message('/' + user + '/' + type + '/' + name, value);
         client.send(msg);
         // console.log(msg);
     });
@@ -44,7 +44,7 @@ io.on('connection', function (socket) {
             userList.splice(index, 1);
         }
 
-        console.log(user + ' disconnected.');
+        console.log(user + ' disconnected');
 
         //Send the list of connected IPS to the OSC
         client.send('/client', userList);

@@ -6,7 +6,6 @@
         "express": "^4.17.1",
         "ipware": "^2.0.0",
         "node-osc": "^4.1.4",
-        "require": "^2.4.20",
         "socket.io": "^2.3.0"
     }
 }
